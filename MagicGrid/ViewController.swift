@@ -29,15 +29,24 @@ class ViewController: UIViewController {
         }
         
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
-        
-        
     }
     
     func handlePan(gesture: UIPanGestureRecognizer) {
         let location = gesture.location(in: view)
-        print(location)
+//        print(location)
         
+        var loopCount = 0
         
+        for subview in view.subviews {
+            //use contains(point: CFPoint) to reference location which is the point we are touching
+            if subview.frame.contains(location) {
+              subview.backgroundColor = .black
+                print("loopCount:", loopCount)
+            
+            }
+            loopCount += 1
+            
+        }
     }
     
     fileprivate func randomColor() -> UIColor {
