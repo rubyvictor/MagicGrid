@@ -74,8 +74,17 @@ class ViewController: UIViewController {
             cellView.layer.transform = CATransform3DMakeScale(3, 3, 3)
             
             
-        }, completion: nil)
+        }, completion: {(_) in
         
+        })
+        
+        if gesture.state == .ended {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: { 
+                cellView.layer.transform = CATransform3DIdentity
+                
+            }, completion: nil)
+            
+        }
         
 //        var loopCount = 0
 //        
@@ -89,6 +98,8 @@ class ViewController: UIViewController {
 //            loopCount += 1
 //            
 //        }
+        
+        
     }
     
     fileprivate func randomColor() -> UIColor {
