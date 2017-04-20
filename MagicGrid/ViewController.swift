@@ -40,6 +40,9 @@ class ViewController: UIViewController {
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
     }
     
+    var selectedCell: UIView?
+    
+    
     func handlePan(gesture: UIPanGestureRecognizer) {
         let location = gesture.location(in: view)
         //print(location)
@@ -51,9 +54,27 @@ class ViewController: UIViewController {
         print(i,j)
 
         let key = "\(i)|\(j)"
-        let cellView = cells[key]
-        cellView?.backgroundColor = .white
+        guard let cellView = cells[key] else { return }
         
+        if selectedCell != cellView {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: { 
+                self.selectedCell?.layer.transform = CATransform3DIdentity
+                
+            }, completion: nil)
+        }
+        //As we are touching, set the cell to cellView, and line 59 above will constantly trigger as our finger leaves the cellView
+        selectedCell = cellView
+        
+        view.bringSubview(toFront: cellView)
+
+        //        cellView?.backgroundColor = .white
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            
+            cellView.layer.transform = CATransform3DMakeScale(3, 3, 3)
+            
+            
+        }, completion: nil)
         
         
 //        var loopCount = 0
