@@ -12,28 +12,35 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let numViewPerRow = 15
+    let numViewPerRow = 26
+    let numViewPerColumn = 110
     var cells = [String: UIView]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let screenWidth = self.view.frame.width
+        let screenHeight = self.view.frame.height
+        let container = UIScrollView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight))
         
-        let width = view.frame.width / CGFloat(numViewPerRow)
         
+        container.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 1000)
+        container.backgroundColor = .clear
+        let width = container.frame.width / CGFloat(numViewPerRow)
+        view.addSubview(container)
         
-        for j in 0...30 {
+        for j in 0...numViewPerColumn {
             for i in 0...numViewPerRow {
                 let cellView = UIView()
-                cellView.backgroundColor = randomColor()
+                cellView.backgroundColor = .yellow
                 cellView.frame = CGRect(x: CGFloat(i) * width, y: CGFloat(j) * width, width: width, height: width)
                 cellView.layer.borderWidth = 0.5
                 cellView.layer.borderColor = UIColor.black.cgColor
-                view.addSubview(cellView)
+                container.addSubview(cellView)
                 
                 let key = "\(i)|\(j)"
                 cells[key] = cellView
-                
+                print(key)
             }
         }
         
@@ -44,11 +51,17 @@ class ViewController: UIViewController {
     
     
     func handlePan(gesture: UIPanGestureRecognizer) {
-        let location = gesture.location(in: view)
+        let screenWidth = self.view.frame.width
+        let screenHeight = self.view.frame.height
+        let container = UIScrollView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight))
+        container.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 1000)
+        let location = gesture.location(in: container)
         //print(location)
         
+        
+        
         //Get exact column and row of point
-        let width = view.frame.width / CGFloat(numViewPerRow)
+        let width = container.frame.width / CGFloat(numViewPerRow)
         let i = Int(location.x / width)
         let j = Int(location.y / width)
         print(i,j)
